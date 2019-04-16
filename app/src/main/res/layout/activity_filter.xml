@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGrey"
+    tools:context=".filter.FilterActivity">
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <Spinner
+        android:id="@+id/country_spinner"
+        style="@style/filter_spinner"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+    </Spinner>
+
+    <Spinner
+        android:id="@+id/ammunition_spinner"
+        style="@style/filter_spinner"
+        android:layout_below="@+id/country_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/country_spinner">
+
+    </Spinner>
+
+    <LinearLayout
+        android:id="@+id/accept_linear_layout"
+        style="@style/filter_linear_layout"
+        app:layout_constraintTop_toBottomOf="@+id/ammunition_spinner">
+
+        <View style="@style/filter_invisible_view" />
+
+        <Button
+            android:id="@+id/accept_button"
+            style="@style/filter_button"
+            android:text="@string/accept" />
+
+        <View style="@style/filter_invisible_view" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/filter_linear_layout"
+        app:layout_constraintTop_toBottomOf="@+id/accept_linear_layout">
+
+        <View style="@style/filter_invisible_view" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            style="@style/filter_cancel_button"
+            android:background="@drawable/filter_cancel_bg_button"
+            android:text="@string/cancel" />
+
+        <View style="@style/filter_invisible_view" />
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/toolbar" />
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_below="@id/toolbar"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/blackTextColor"
+                android:textSize="24sp" />
+
+            <TableLayout
+                android:id="@+id/table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_text_view"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="28dp"
+                android:background="@color/Gray_100">
+
+                <TableRow
+                    android:id="@+id/country_table_row"
+                    android:layout_height="20dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="@string/country"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/country_text_view"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/year_of_production_table_row"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="@string/year_of_production"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/year_of_production_text_view"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/type_of_bullet_table_row"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="@string/type_of_bullet"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/type_of_bullet_text_view"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/muzzle_velocity_table_row"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="@string/muzzle_velocity"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/muzzle_velocity_text_view"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/effective_range_table_row"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="@string/effective_range"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/effective_range_text_view"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/feed_system_table_row"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="@string/feed_system"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/feed_system_text_view"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/length_table_row"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="@string/length"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/length_text_view"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/barrel_length_table_row"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="@string/barrel_length"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/barrel_length_text_view"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/weight_table_row"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="@string/weight"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/weight_text_view"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:textColor="@color/blackTextColor"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <LinearLayout
+                android:id="@+id/button_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/table"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginTop="10dp"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/buy_gun_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/buy_the_gun"
+                    android:layout_weight="1">
+
+                </Button>
+
+                <Button
+                    android:id="@+id/buy_ammo_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/buy_ammo">
+
+                </Button>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/description_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button_container"
+                android:textSize="16sp"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="28dp"
+                android:layout_marginBottom="6dp"
+                android:textColor="@color/blackTextColor" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
+

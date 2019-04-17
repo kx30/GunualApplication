@@ -23,10 +23,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
         DemoFragment demoFragment = new DemoFragment();
-        i++;
         Bundle bundle = new Bundle();
-        bundle.putString("message", mInformationAboutApplication[i - 1]);
-        bundle.putInt("image", mPageImages[i - 1]);
+        bundle.putString("message", mInformationAboutApplication[i]);
+        bundle.putInt("image", mPageImages[i]);
+        i++;
         demoFragment.setArguments(bundle);
         return demoFragment;
     }

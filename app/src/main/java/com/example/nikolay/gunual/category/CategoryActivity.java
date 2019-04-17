@@ -7,37 +7,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.example.nikolay.gunual.preview.PreviewActivity;
+import com.example.nikolay.gunual.CategoryDAO;
+import com.example.nikolay.gunual.LocalCategoryDAO;
 import com.example.nikolay.gunual.R;
 import com.example.nikolay.gunual.about_us.AboutUsActivity;
 import com.example.nikolay.gunual.favorite.FavoriteActivity;
+import com.example.nikolay.gunual.models.WeaponCategory;
+import com.example.nikolay.gunual.preview.PreviewActivity;
 
 import java.util.ArrayList;
 
 public class CategoryActivity extends AppCompatActivity {
 
-    private static final String TAG = "CategoryActivity";
-
-    private ArrayList<String> mTitles = new ArrayList<>();
-    private ArrayList<Integer> mImages = new ArrayList<>();
-    private String[] mCategoryOfWeapons = {"Pistols", "Submachine guns", "Rifles", "Carbines", "Sniper rifles", "Machine guns", "Shotguns"};
-    private Integer[] mDrawables = {R.drawable.pistol, R.drawable.submachine_gun, R.drawable.rifle,
-            R.drawable.carbine, R.drawable.sniper_rifle, R.drawable.machine_gun, R.drawable.shotgun};
+    private ArrayList<WeaponCategory> mWeaponCategories = new ArrayList<>();
+    private CategoryDAO mCategoryDAO = new LocalCategoryDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
         initToolbar();
-        addCategoryOfWeapons();
+        mWeaponCategories = mCategoryDAO.loadCategoryList();
         initRecyclerView();
-
-        Log.d(TAG, "onCreate: started.");
     }
 
     @Override
@@ -75,24 +70,15 @@ public class CategoryActivity extends AppCompatActivity {
         }
     }
 
-    private void addCategoryOfWeapons() {
-        for (int i = 0; i < mCategoryOfWeapons.length; i++) {
-            mTitles.add(mCategoryOfWeapons[i]);
-            mImages.add(mDrawables[i]);
-        }
-    }
-
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        Log.d(TAG, "initToolbar: initialized.");
     }
 
     private void initRecyclerView() {
-        Log.d(TAG, "initRecyclerView: init recycler view");
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        CategoryAdapter adapter = new CategoryAdapter(this, mTitles, mImages);
+        CategoryAdapter adapter = new CategoryAdapter(this, mWeaponCategories);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

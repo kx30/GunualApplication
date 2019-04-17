@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,8 +27,8 @@ public class PreviewActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        Button skipButton = findViewById(R.id.skip_button);
-        skipButton.setOnClickListener(view -> {
+        Button continueButton = findViewById(R.id.continue_button);
+        continueButton.setOnClickListener(view -> {
             SharedPreferences sharedPreferences = getSharedPreferences("value", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("isSkipped", true);
@@ -38,6 +37,10 @@ public class PreviewActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        initDots(adapter, viewPager);
+    }
+
+    private void initDots(ViewPagerAdapter adapter, ViewPager viewPager) {
         LinearLayout sliderDotsPanel = findViewById(R.id.dot_layout);
         mDotsCount = adapter.getCount();
         mDots = new ImageView[mDotsCount];
@@ -48,8 +51,8 @@ public class PreviewActivity extends AppCompatActivity {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(12, 0, 12, 0);
             sliderDotsPanel.addView(mDots[i], params);
-
         }
+
         mDots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -58,19 +61,15 @@ public class PreviewActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int i) {
-
                 for (int j = 0; j < mDotsCount; j++) {
                     mDots[j].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.inactive_dot));
                 }
-
                 mDots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
-
             }
 
             @Override
             public void onPageScrollStateChanged(int i) {
             }
         });
-
     }
 }

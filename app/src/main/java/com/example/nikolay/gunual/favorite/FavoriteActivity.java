@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.nikolay.gunual.FavoriteDAO;
 import com.example.nikolay.gunual.LocalDatabaseFavoriteDAO;
@@ -26,7 +25,6 @@ import java.util.Collections;
 
 public class FavoriteActivity extends AppCompatActivity {
 
-    private static final String TAG = "FavoriteActivity";
     private static final int FAVORITE_REQUEST = 1;
     private WeaponAdapter mAdapter;
 
@@ -42,16 +40,13 @@ public class FavoriteActivity extends AppCompatActivity {
         loadWeaponsFromDatabase();
         sortWeapons(mWeapons);
         initRecyclerView(recyclerView);
-        Log.d(TAG, "onCreate: created.");
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getItemId() == android.R.id.home) {
             finish();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -79,14 +74,12 @@ public class FavoriteActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        Log.d(TAG, "initToolbar: Toolbar initialized.");
     }
 
     private void initRecyclerView(RecyclerView recyclerView) {
         mAdapter = new WeaponAdapter(this, mWeapons, mFavoriteDAO);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Log.d(TAG, "initRecyclerView: recycler view initialized");
     }
 
     private void loadWeaponsFromDatabase() {
@@ -118,7 +111,6 @@ public class FavoriteActivity extends AppCompatActivity {
         textIfFavoritesNotFound.setVisibility(View.VISIBLE);
         imageIfFavoritesNotFound.setVisibility(View.VISIBLE);
     }
-
 
     private void sortWeapons(ArrayList<Weapon> weaponList) {
         Collections.sort(weaponList, (w1, w2) -> w1.getTitle().compareTo(w2.getTitle()));

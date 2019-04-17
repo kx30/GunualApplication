@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,13 +16,13 @@ import com.example.nikolay.gunual.R;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FilterActivity extends AppCompatActivity {
+public class FilterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "FilterActivity";
     private String country;
     private String ammo;
     private ArrayList<String> countries;
     private ArrayList<String> ammunition;
+    private Button acceptButton, cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +37,6 @@ public class FilterActivity extends AppCompatActivity {
         Collections.sort(ammunition);
         countries.add(0, "Country");
         ammunition.add(0, "Ammo");
-
-        for (int i = 0; i < countries.size(); i++) {
-            Log.d(TAG, "onCreate: " + countries.get(i));
-        }
 
         Spinner countrySpinner = findViewById(R.id.country_spinner);
         ArrayAdapter<String> countryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, countries);
@@ -77,10 +72,25 @@ public class FilterActivity extends AppCompatActivity {
             }
         });
 
-        Button acceptButton = findViewById(R.id.accept_button);
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        acceptButton = findViewById(R.id.accept_button);
+        acceptButton.setOnClickListener(this);
+
+        cancelButton = findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.accept_button:
                 Intent data = new Intent();
                 if (country.equals("Country") && ammo.equals("Ammo")) {
                     setResult(RESULT_CANCELED);
@@ -99,24 +109,11 @@ public class FilterActivity extends AppCompatActivity {
                     setResult(RESULT_OK, data);
                     finish();
                 }
-            }
-        });
 
-        Button cancelButton = findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(view -> {
-            setResult(RESULT_CANCELED);
-            finish();
-        });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            finish();
+            case R.id.cancel_button:
+                setResult(RESULT_CANCELED);
+                finish();
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void initToolbar() {
@@ -125,7 +122,5 @@ public class FilterActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("");
-        Log.d(TAG, "initToolbar: initialized.");
     }
-
 }

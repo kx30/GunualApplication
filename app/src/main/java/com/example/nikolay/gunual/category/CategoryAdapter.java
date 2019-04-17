@@ -13,23 +13,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nikolay.gunual.R;
+import com.example.nikolay.gunual.models.WeaponCategory;
 import com.example.nikolay.gunual.weapon.WeaponActivity;
 
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
-    private static final String TAG = "CategoryAdapter";
-
     private Context mContext;
-    private ArrayList<String> mTitles;
-    private ArrayList<Integer> mImages;
-    private String[] mCategoryOfWeapons = {"Pistol", "Submachine gun", "Rifle", "Carbine", "Sniper rifle", "Machine gun", "Shotgun"};
+    private ArrayList<WeaponCategory> mWeaponCategories;
 
-    public CategoryAdapter(Context context, ArrayList<String> titles, ArrayList<Integer> images) {
+    public CategoryAdapter(Context context, ArrayList<WeaponCategory> weaponCategories) {
         mContext = context;
-        mTitles = titles;
-        mImages = images;
+        mWeaponCategories = weaponCategories;
     }
 
     @NonNull
@@ -37,27 +33,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.category_item, viewGroup, false);
         final ViewHolder holder = new ViewHolder(view);
-        Log.d(TAG, "onCreateViewHolder: created.");
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        viewHolder.mTitle.setText(mTitles.get(i));
-        viewHolder.mImage.setImageResource(mImages.get(i));
+        viewHolder.mTitle.setText(mWeaponCategories.get(i).getTitle());
+        viewHolder.mImage.setImageResource(mWeaponCategories.get(i).getImage());
 
         viewHolder.mParentLayout.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, WeaponActivity.class);
-            Log.d(TAG, "onClick: " + mCategoryOfWeapons[i]);
-            intent.putExtra("Weapon", mCategoryOfWeapons[i]);
+            intent.putExtra("Weapon", mWeaponCategories.get(i).getTitle());
             mContext.startActivity(intent);
         });
-        Log.d(TAG, "onBindViewHolder: called.");
     }
 
     @Override
     public int getItemCount() {
-        return mTitles.size();
+        return mWeaponCategories.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

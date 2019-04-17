@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,7 +19,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.nikolay.gunual.FavoriteDAO;
 import com.example.nikolay.gunual.LocalDatabaseFavoriteDAO;
@@ -34,9 +32,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class WeaponActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class WeaponActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
 
-    private static final String TAG = "WeaponActivity";
     private static final int FAVORITE_REQUEST = 1;
     private static final int FILTER_REQUEST = 2;
 
@@ -53,45 +50,7 @@ public class WeaponActivity extends AppCompatActivity implements SearchView.OnQu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weapon);
         mFloatingActionButton = findViewById(R.id.filter_button);
-        mFloatingActionButton.setOnClickListener(view -> {
-
-            ArrayList<String> countries = new ArrayList<>();
-            ArrayList<String> ammo = new ArrayList<>();
-            Weapon weapon = mWeapons.get(0);
-            countries.add(weapon.getCountry());
-            try {
-                ammo.add(0, weapon.getTypeOfBullet());
-            } catch (Exception e) {
-                ammo.add(0, weapon.getTypeOfBullet().substring(0, weapon.getTypeOfBullet().indexOf(" ")));
-            }
-
-            for (int i = 1; i < mWeapons.size(); i++) {
-                Weapon filteredWeapon = mWeapons.get(i);
-                for (int j = 0; j < countries.size(); j++) {
-                    String country = filteredWeapon.getCountry();
-                    if (!countries.contains(country) && !country.equals("")) {
-                        countries.add(country);
-                    }
-                }
-                for (int j = 0; j < ammo.size(); j++) {
-                    try {
-                        String substring = filteredWeapon.getTypeOfBullet().substring(0, filteredWeapon.getTypeOfBullet().indexOf(" "));
-                        if (!ammo.contains(substring) && !substring.equals("")) {
-                            ammo.add(substring);
-                        }
-                    } catch (Exception e) {
-                        if (!ammo.contains(filteredWeapon.getTypeOfBullet()) && !filteredWeapon.getTypeOfBullet().equals("")) {
-                            ammo.add(filteredWeapon.getTypeOfBullet());
-                        }
-                    }
-                }
-            }
-
-            Intent intent = new Intent(WeaponActivity.this, FilterActivity.class);
-            intent.putExtra("countries", countries);
-            intent.putExtra("ammo", ammo);
-            startActivityForResult(intent, FILTER_REQUEST);
-        });
+        mFloatingActionButton.setOnClickListener(this);
         initToolbar();
         mProgressBar = findViewById(R.id.progress_bar);
         mRecyclerView = findViewById(R.id.recycler_view);
@@ -99,7 +58,7 @@ public class WeaponActivity extends AppCompatActivity implements SearchView.OnQu
 
         swipeContent();
         db = FirebaseFirestore.getInstance();
-        addItems();
+        downloadObjectsFromFirebaseFirestore();
     }
 
     @Override
@@ -136,6 +95,46 @@ public class WeaponActivity extends AppCompatActivity implements SearchView.OnQu
         }
         mAdapter.updateList(filteredWeapons);
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        ArrayList<String> countries = new ArrayList<>();
+        ArrayList<String> ammo = new ArrayList<>();
+        Weapon weapon = mWeapons.get(0);
+        countries.add(weapon.getCountry());
+        try {
+            ammo.add(0, weapon.getTypeOfBullet());
+        } catch (Exception e) {
+            ammo.add(0, weapon.getTypeOfBullet().substring(0, weapon.getTypeOfBullet().indexOf(" ")));
+        }
+
+        for (int i = 1; i < mWeapons.size(); i++) {
+            Weapon filteredWeapon = mWeapons.get(i);
+            for (int j = 0; j < countries.size(); j++) {
+                String country = filteredWeapon.getCountry();
+                if (!countries.contains(country) && !country.equals("")) {
+                    countries.add(country);
+                }
+            }
+            for (int j = 0; j < ammo.size(); j++) {
+                try {
+                    String substring = filteredWeapon.getTypeOfBullet().substring(0, filteredWeapon.getTypeOfBullet().indexOf(" "));
+                    if (!ammo.contains(substring) && !substring.equals("")) {
+                        ammo.add(substring);
+                    }
+                } catch (Exception e) {
+                    if (!ammo.contains(filteredWeapon.getTypeOfBullet()) && !filteredWeapon.getTypeOfBullet().equals("")) {
+                        ammo.add(filteredWeapon.getTypeOfBullet());
+                    }
+                }
+            }
+        }
+
+        Intent intent = new Intent(WeaponActivity.this, FilterActivity.class);
+        intent.putExtra("countries", countries);
+        intent.putExtra("ammo", ammo);
+        startActivityForResult(intent, FILTER_REQUEST);
     }
 
     @Override
@@ -181,9 +180,7 @@ public class WeaponActivity extends AppCompatActivity implements SearchView.OnQu
             if (weapons.size() == 0) {
                 showNothingNotFoundFilterText();
             }
-
             mAdapter = new WeaponAdapter(this, weapons, mFavoriteDAO);
-            mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setAdapter(mAdapter);
         } else if (requestCode == FILTER_REQUEST && resultCode == RESULT_CANCELED) {
             mAdapter = new WeaponAdapter(this, mWeapons, mFavoriteDAO);
@@ -199,44 +196,37 @@ public class WeaponActivity extends AppCompatActivity implements SearchView.OnQu
         getSupportActionBar().setTitle("");
     }
 
-    private void addItems() {
-        try {
-            String value = getWeaponCategory();
-            db.collection("weapons")
-                    .document("kind_of_weapon")
-                    .collection(value)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        if (!queryDocumentSnapshots.isEmpty()) {
-                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                            for (DocumentSnapshot d : list) {
-                                mWeapons.add(new Weapon(
-                                        d.getString("title"),
-                                        d.getString("country"),
-                                        d.getString("year_of_production"),
-                                        d.getString("type_of_bullet"),
-                                        d.getString("effective_range"),
-                                        d.getString("muzzle_velocity"),
-                                        d.getString("length"),
-                                        d.getString("barrel_length"),
-                                        d.getString("weight"),
-                                        d.getString("feed_system"),
-                                        d.getString("description"),
-                                        d.getString("image_url")
-                                ));
-                            }
-
-                            sortItems(mWeapons);
-
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
-                            mFloatingActionButton.show();
+    private void downloadObjectsFromFirebaseFirestore() {
+        String category = getWeaponCategory();
+        db.collection("weapons")
+                .document("kind_of_weapon")
+                .collection(category)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        for (DocumentSnapshot d : list) {
+                            mWeapons.add(new Weapon(
+                                    d.getString("title"),
+                                    d.getString("country"),
+                                    d.getString("year_of_production"),
+                                    d.getString("type_of_bullet"),
+                                    d.getString("effective_range"),
+                                    d.getString("muzzle_velocity"),
+                                    d.getString("length"),
+                                    d.getString("barrel_length"),
+                                    d.getString("weight"),
+                                    d.getString("feed_system"),
+                                    d.getString("description"),
+                                    d.getString("image_url")
+                            ));
                         }
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(WeaponActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
-        } catch (Exception e) {
-            Log.d(TAG, "Error in Weapon Activity");
-        }
+                        sortItems(mWeapons);
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
+                        mFloatingActionButton.show();
+                    }
+                });
     }
 
     private void sortItems(ArrayList<Weapon> weaponList) {

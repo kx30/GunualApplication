@@ -39,7 +39,6 @@ public class InformationActivity extends AppCompatActivity {
     private ImageView mImageView;
     private FavoriteDAO mFavoriteDAO = new LocalDatabaseFavoriteDAO(this);
 
-
     private boolean isFavorite;
 
     @Override
@@ -78,20 +77,15 @@ public class InformationActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.information_menu, menu);
-
         Bundle argument = getIntent().getExtras();
         String title = argument.getString("title");
-
         MenuItem addToFavorite = menu.findItem(R.id.add_to_favorite);
-
         if (mFavoriteDAO.isFavorite(title)) {
             addToFavorite.setTitle(R.string.remove_from_favorites);
             isFavorite = true;
         }
-
         return true;
     }
-
 
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -124,7 +118,6 @@ public class InformationActivity extends AppCompatActivity {
             String url = "https://www.gunbroker.com/All/search?Keywords=" + title.replaceAll(" ", "%20");
             Intent intent = new Intent(InformationActivity.this, BrowserActivity.class);
             intent.putExtra("url", url);
-            Log.d(TAG, "onClick: " + url);
             startActivity(intent);
         });
 
@@ -135,7 +128,7 @@ public class InformationActivity extends AppCompatActivity {
             try {
                 typeOfBullet = typeOfBullet.substring(0, typeOfBullet.indexOf("/"));
             } catch (Exception e) {
-                Log.d(TAG, "onOptionsItemSelected: " + e);
+                Log.e("InformationActivity", e.getMessage());
             }
             String url = "https://www.cheaperthandirt.com/search.do?query=" + typeOfBullet.replaceAll("×", "x") + "%20ammo";
             Intent intent = new Intent(InformationActivity.this, BrowserActivity.class);
@@ -143,7 +136,6 @@ public class InformationActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
 
     private void getWeaponExtras() {
         String title, country, yearOfProduction, typeOfBullet,
@@ -163,7 +155,6 @@ public class InformationActivity extends AppCompatActivity {
         weight = arguments.getString("weight");
         imageUrl = arguments.getString("image_url");
         description = arguments.getString("description");
-
 
         Picasso.get()
                 .load("http:" + imageUrl)

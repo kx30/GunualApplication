@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.nikolay.gunual">
+    package="ru.webant.gunual">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,10 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".preview.PreviewActivity" />
-        <activity android:name=".filter.FilterActivity" />
+        <activity android:name="ru.webant.nikolay.gunual.preview.PreviewActivity" />
+        <activity android:name="ru.webant.nikolay.gunual.filter.FilterActivity" />
         <activity
-            android:name=".category.CategoryActivity"
+            android:name="ru.webant.nikolay.gunual.category.CategoryActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,14 +26,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".weapon.WeaponActivity"
+            android:name="ru.webant.nikolay.gunual.weapon.WeaponActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".information.InformationActivity"
+            android:name="ru.webant.nikolay.gunual.information.InformationActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".about_us.AboutUsActivity" />
-        <activity android:name=".favorite.FavoriteActivity" />
-        <activity android:name=".browser.BrowserActivity" />
+        <activity android:name="ru.webant.nikolay.gunual.about_us.AboutUsActivity" />
+        <activity android:name="ru.webant.nikolay.gunual.favorite.FavoriteActivity" />
+        <activity android:name="ru.webant.nikolay.gunual.browser.BrowserActivity" />
     </application>
 
 </manifest>
